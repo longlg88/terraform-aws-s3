@@ -1,0 +1,27 @@
+#!/bin/bash
+
+whereisvpc="$PWD/../terraform-aws-vpc/env/dev-demo/main.tf"
+
+if [ -f $whereisvpc ]; then
+	bucket_name=`grep -r "bucket" $PWD/../terraform-aws-vpc/env/dev-demo/main.tf | awk -F= '{print $2}' | sed 's/\"//g' | sed 's/ //g'`
+else
+	read bucket_name
+fi
+default_region=`aws configure get region`
+
+cat <<'EOF' > main.tf
+provider "aws" {
+    region = "@@region@@"
+}
+resource "aws_s3_bucket" "bucket" {
+    bucket = "@@bucket_name@@"
+    acl = "public-read"
+
+    tags = {
+        Name = "test"
+	Environment = "Dev"
+    }
+}
+EOF
+sed -i -e 's/@@region@@/'"$default_region"'/g' main.tf
+sed -i -e 's/@@bucket_name@@/'"$bucket_name"'/g' main.tf
