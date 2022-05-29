@@ -35,5 +35,5 @@ jobs:
           terraform -chdir=test plan
       - name: Run Terraform Apply
         run: |
-          terraform -chdir=tests init
-          terraform -chdir=tests apply -auto-approve
+          terraform -chdir=test init
+          terraform -chdir=test apply -auto-approve
