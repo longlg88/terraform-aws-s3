@@ -12,5 +12,5 @@ jobs:
         uses: actions/checkout@v3
       - name: Run Terraform Validate
         run: |
-          terraform -chdir=tests init
-          terraform -chdir=tests validate
+          terraform -chdir=test init
+          terraform -chdir=test validate
