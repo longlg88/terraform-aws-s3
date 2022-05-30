@@ -8,11 +8,8 @@ terraform {
 }
 
 provider "aws" {
-  assume_role {
-    role_arn     = var.role_arn
-    session_name = "s3-test"
-  }
-
+  access_key = "test"
+  secret_key = "test"
   region = "ap-northeast-2"
 
   s3_use_path_style           = true
