@@ -36,4 +36,4 @@ jobs:
       - name: Run Terraform Apply
         run: |
           terraform -chdir=test init
-          terraform -chdir=test apply -auto-approve
+          terraform -chdir=test destroy -auto-approve
