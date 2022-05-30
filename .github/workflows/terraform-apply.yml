@@ -1,0 +1,41 @@
+name: terraform-apply-with-localstack
+on:
+  push:
+    branches-ignore:
+      - "main"
+
+jobs:
+  terraform-apply:
+    env:
+      TF_VAR_role_arn: ${{ secrets.AWS_ARN }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Branch
+        uses: actions/checkout@v3
+      - name: asdf_install
+        uses: asdf-vm/actions/install@v1
+      # - name: Set aws credentials
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+      #     aws-region: ap-northeast-2
+      - name: Start LocalStack
+        run: |
+          pip install localstack
+          docker pull localstack/localstack
+          localstack start -d
+          echo "Waiting for LocalStack startup..."
+          localstack wait -t 30
+      - name: Run Terraform Plan
+        run: |
+          terraform -chdir=test init
+          terraform -chdir=test plan
+      - name: Run Terraform Apply
+        run: |
+          terraform -chdir=test init
+          terraform -chdir=test apply -auto-approve
+      - name: Run Terraform Destroy
+        run: |
+          terraform -chdir=test init
+          terraform -chdir=test destroy -auto-approve

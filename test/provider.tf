@@ -4,18 +4,20 @@ terraform {
       source = "hashicorp/aws"
     }
   }
+  required_version = "1.1.5"
 }
 
 provider "aws" {
-  assume_role {
-    role_arn     = var.role_arn
-    session_name = "s3-test"
-  }
-
-  region = "ap-northeast-2"
+  access_key = "test"
+  secret_key = "test"
+  region     = "ap-northeast-2"
 
   s3_use_path_style           = true
   skip_credentials_validation = true
   skip_metadata_api_check     = true
   skip_requesting_account_id  = true
+
+  endpoints {
+    s3 = "http://s3.localhost.localstack.cloud:4566"
+  }
 }
