@@ -10,7 +10,7 @@ terraform {
 provider "aws" {
   access_key = "test"
   secret_key = "test"
-  region = "ap-northeast-2"
+  region     = "ap-northeast-2"
 
   s3_use_path_style           = true
   skip_credentials_validation = true
